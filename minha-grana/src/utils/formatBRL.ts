@@ -1,0 +1,5 @@
+export const formatBRL = (value: number | undefined) =>
+  new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(value ?? 0);
