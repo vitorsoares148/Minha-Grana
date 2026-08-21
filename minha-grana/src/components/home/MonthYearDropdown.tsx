@@ -41,11 +41,6 @@ export default function MonthYearDropdown({
   }, []);
 
   useEffect(() => {
-    if (!isMounted.current) {
-      isMounted.current = true;
-      return;
-    }
-
     async function handleUserInfoChange() {
       setLoadingInfo(true);
       await getUserInfoDate(month, year);
