@@ -131,7 +131,7 @@ export default function AddGoalDropdown({
       ref={dropdownRefMenu}
       className={cn(
         "absolute top-17 right-0 z-8",
-        "min-h-33 w-120 rounded-lg p-3",
+        "min-h-35 w-120 rounded-lg p-3",
         "border-2 border-white/8 text-white",
         "bg-neutral-900",
       )}
