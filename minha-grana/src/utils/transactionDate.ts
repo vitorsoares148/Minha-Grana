@@ -6,27 +6,21 @@ export function isTransactionOnDate(
   transaction: Transaction,
   date: Date,
 ): boolean {
-  const [year, month, day] = transaction.transaction_date
-    .split("-")
-    .map(Number);
+  const transactionDateString = transaction.transaction_date.split("T")[0];
 
-  const transactionYear = year;
+  const [year, month, day] = transactionDateString.split("-").map(Number);
+
   const transactionMonth = month - 1;
-  const transactionDay = day;
-
-  const transactionDate = new Date(
-    transactionYear,
-    transactionMonth,
-    transactionDay,
-  );
 
   if (!transaction.recurrent) {
     return (
-      transactionYear === date.getFullYear() &&
+      year === date.getFullYear() &&
       transactionMonth === date.getMonth() &&
-      transactionDay === date.getDate()
+      day === date.getDate()
     );
   }
+
+  const transactionDate = new Date(year, transactionMonth, day);
 
   if (transactionDate > date) {
     return false;
@@ -34,9 +28,14 @@ export function isTransactionOnDate(
 
   const selectedDay = date.getDate();
 
-  if (transactionDay > 28) {
+  if (day > 28) {
     return selectedDay === endOfMonth(date).getDate();
   }
 
-  return transactionDay === selectedDay;
+  console.log(
+    transaction.transaction_date,
+    date,
+  );
+
+  return day === selectedDay;
 }
