@@ -186,13 +186,13 @@ export default function AddTransactionDropdown({
       ref={menuRef}
       className={cn(
         "absolute bottom-26 left-1/2 z-8 -translate-x-1/2 transform",
-        "h-auto w-120 rounded-lg p-3",
+        "min-h-50.5 w-120 rounded-lg p-3",
         "border-2 border-white/8 text-white",
         "bg-neutral-900/90",
       )}
     >
       {loadingTransaction ? (
-        <Loading />
+        <Loading className="mt-12.5" />
       ) : (
         <div>
           {/* Descrição Input */}
