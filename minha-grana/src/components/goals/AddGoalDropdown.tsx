@@ -95,11 +95,10 @@ export default function AddGoalDropdown({
       return;
     }
 
-    setLoadingCreateGoal(true);
-
     const convertedValue = Number(value) / 100;
 
     try {
+      setLoadingCreateGoal(true);
       const result = await createGoal(description.trim(), convertedValue);
 
       if (result.message !== "SUCCESS") {
