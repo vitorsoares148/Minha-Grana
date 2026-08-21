@@ -1,4 +1,5 @@
 const transactionsService = require("../services/transactions.service");
+const { VALID_CATEGORY_IDS } = require("../constants/categories");
 
 // ======================================================
 // CRIAR TRANSAÇÃO
@@ -55,9 +56,6 @@ async function createTransaction(req, res) {
       error: "INVALID_AMOUNT",
     });
   }
-
-  // CATEGORIA
-  const VALID_CATEGORY_IDS = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
 
   if (!VALID_CATEGORY_IDS.has(category_id)) {
     return res.status(400).json({
