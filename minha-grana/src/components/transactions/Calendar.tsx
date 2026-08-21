@@ -64,15 +64,19 @@ export default function Calendar({
         </h2>
 
         <div className="flex gap-2">
-          <MdKeyboardArrowLeft
+          <button
             onClick={() => handleMonthChange(subMonths(currentDate, 1))}
-            className="h-12 w-12 rounded-xl bg-white/6 text-white transition-all hover:bg-green-500"
-          />
+            disabled={loadingDate}
+          >
+            <MdKeyboardArrowLeft className="h-12 w-12 rounded-xl bg-white/6 text-white transition-all hover:bg-green-500" />
+          </button>
 
-          <MdKeyboardArrowRight
+          <button
             onClick={() => handleMonthChange(addMonths(currentDate, 1))}
-            className="h-12 w-12 rounded-xl bg-white/6 text-white transition-all hover:bg-green-500"
-          />
+            disabled={loadingDate}
+          >
+            <MdKeyboardArrowRight className="h-12 w-12 rounded-xl bg-white/6 text-white transition-all hover:bg-green-500" />
+          </button>
         </div>
       </div>
 
