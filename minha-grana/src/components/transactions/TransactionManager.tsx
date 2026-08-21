@@ -38,9 +38,9 @@ export default function TransactionManager({
 
   const transactions = useMemo(() => {
     return (
-      user?.transactions.filter((transaction) =>
-        isTransactionOnDate(transaction, selectedDate),
-      ) ?? []
+      user?.transactions
+        .filter((transaction) => isTransactionOnDate(transaction, selectedDate))
+        .sort((a, b) => a.id - b.id) ?? []
     );
   }, [user?.transactions, selectedDate]);
 
@@ -84,7 +84,7 @@ export default function TransactionManager({
             "text-center font-sans text-[36px] font-bold",
           )}
         >
-          {selectedDate.getDate()} de {MONTHS[selectedDate.getMonth()].name} ,{" "}
+          {selectedDate.getDate()} de {MONTHS[selectedDate.getMonth()].name},{" "}
           {selectedDate.getFullYear()}
         </div>
 

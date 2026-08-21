@@ -32,10 +32,5 @@ export function isTransactionOnDate(
     return selectedDay === endOfMonth(date).getDate();
   }
 
-  console.log(
-    transaction.transaction_date,
-    date,
-  );
-
   return day === selectedDay;
 }
