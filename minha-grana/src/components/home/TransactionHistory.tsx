@@ -5,6 +5,7 @@ import { formatDate } from "../../utils/formatDate";
 import { cn } from "../../utils/cn";
 
 import Box from "../generic/Box";
+import { useMemo } from "react";
 
 type TransactionHistoryProps = {
   user: User;
@@ -15,6 +16,21 @@ const categoryMap = new Map(
 );
 
 export default function TransactionHistory({ user }: TransactionHistoryProps) {
+  const transactions = useMemo(() => {
+    return (
+      user?.transactions.sort((a, b) => {
+        const dateA = a.transaction_date.split("T")[0];
+        const dateB = b.transaction_date.split("T")[0];
+
+        if (dateA !== dateB) {
+          return dateB.localeCompare(dateA);
+        }
+
+        return b.id - a.id;
+      }) ?? []
+    );
+  }, [user?.transactions]);
+
   return (
     <Box>
       <div className="mb-5 font-sans text-[24px] font-bold">
@@ -37,7 +53,7 @@ export default function TransactionHistory({ user }: TransactionHistoryProps) {
 
         {/* Transações */}
         <ul className="max-h-50 overflow-y-auto">
-          {user.transactions.map((transaction) => {
+          {transactions.map((transaction) => {
             const category = categoryMap.get(transaction.category_id);
 
             return (
