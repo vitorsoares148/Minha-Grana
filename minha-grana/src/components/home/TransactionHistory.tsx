@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import type { User } from "../../types/auth";
 import { CATEGORIES } from "../../constants/categories";
 import { formatBRL } from "../../utils/formatBRL";
@@ -5,7 +7,6 @@ import { formatDate } from "../../utils/formatDate";
 import { cn } from "../../utils/cn";
 
 import Box from "../generic/Box";
-import { useMemo } from "react";
 
 type TransactionHistoryProps = {
   user: User;

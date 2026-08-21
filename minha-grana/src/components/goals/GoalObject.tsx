@@ -16,7 +16,13 @@ const ERROR_BALANCE = {
   INVALID: 1,
 };
 
-export default function Goal({ item }: { item: Goal }) {
+export default function Goal({
+  item,
+  setLoadingGoals,
+}: {
+  item: Goal;
+  setLoadingGoals: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const [value, setValue] = useState<number | "">(0);
   const [valueError, setValueError] = useState(ERROR_BALANCE.NONE);
   const { user, getUserInfo, updateBalance } = useAuth();
@@ -26,6 +32,7 @@ export default function Goal({ item }: { item: Goal }) {
   };
 
   async function handleDeleteGoal(id: number) {
+    setLoadingGoals(true);
     const result = await deleteGoal(id);
 
     if (result.message === "SUCCESS") {
@@ -33,6 +40,7 @@ export default function Goal({ item }: { item: Goal }) {
 
       await getUserInfo();
     }
+    setLoadingGoals(false);
   }
 
   function calculateNewValue(goal: Goal, value: number) {

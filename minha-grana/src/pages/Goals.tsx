@@ -5,11 +5,13 @@ import { cn } from "../utils/cn";
 import Box from "../components/generic/Box";
 import GoalObject from "../components/goals/GoalObject";
 import AddGoalDropdown from "../components/goals/AddGoalDropdown";
+import Loading from "../components/generic/Loading";
 
 export default function Goals() {
   const { user } = useAuth();
   const [openMenu, setOpenMenu] = useState(false);
   const [useable, setUseable] = useState(true);
+  const [loadingGoals, setLoadingGoals] = useState(false);
 
   const activeGoals = user?.goals.filter((goal) => !goal.finished) ?? [];
 
@@ -57,20 +59,32 @@ export default function Goals() {
             )}
           </div>
 
-          {/* Nenhuma meta */}
-          {activeGoals.length === 0 && (
-            <div className="mb-5 text-center text-[24px] font-bold">
-              Nenhuma meta encontrada!
+          {loadingGoals ? (
+            <Loading />
+          ) : (
+            <div>
+              {/* Nenhuma meta */}
+              {activeGoals.length === 0 && (
+                <div className="mb-5 text-center text-[24px] font-bold">
+                  Nenhuma meta encontrada!
+                </div>
+              )}
+
+              {/* Metas */}
+              <ul className="grid max-h-148 place-items-center gap-y-7 overflow-y-auto lg:grid-cols-2">
+                {activeGoals.map(
+                  (goal) =>
+                    !goal.finished && (
+                      <GoalObject
+                        item={goal}
+                        setLoadingGoals={setLoadingGoals}
+                        key={goal.id}
+                      />
+                    ),
+                )}
+              </ul>
             </div>
           )}
-
-          {/* Metas */}
-          <ul className="grid max-h-148 place-items-center gap-y-7 overflow-y-auto lg:grid-cols-2">
-            {activeGoals.map(
-              (goal) =>
-                !goal.finished && <GoalObject item={goal} key={goal.id} />,
-            )}
-          </ul>
         </div>
       </Box>
     </div>
