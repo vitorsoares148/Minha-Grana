@@ -8,9 +8,11 @@ import TransactionHistory from "../components/home/TransactionHistory";
 
 import { useAuth } from "../contexts/AuthContext";
 import { cn } from "../utils/cn";
+import { useState } from "react";
 
 export default function Home() {
-  const { user, loadingComponent } = useAuth();
+  const { user } = useAuth();
+  const [loadingInfo, setLoadingInfo] = useState(true);
 
   const totalExpenses =
     user?.transactions.reduce(
@@ -32,10 +34,10 @@ export default function Home() {
           Bem-vindo, {user?.username}!
         </div>
 
-        <MonthYearDropdown />
+        <MonthYearDropdown setLoadingInfo={setLoadingInfo} />
       </div>
 
-      {loadingComponent ? (
+      {loadingInfo ? (
         <div className="w-152 lg:w-297">
           <Loading />
         </div>

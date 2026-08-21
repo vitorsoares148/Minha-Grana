@@ -5,7 +5,11 @@ import { MONTHS } from "../../constants/months";
 
 import DateDropdown from "./DateDropdown";
 
-export default function MonthYearDropdown() {
+export default function MonthYearDropdown({
+  setLoadingInfo,
+}: {
+  setLoadingInfo: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const currentYear = new Date().getFullYear();
 
   const [month, setMonth] = useState(new Date().getMonth());
@@ -42,7 +46,13 @@ export default function MonthYearDropdown() {
       return;
     }
 
-    getUserInfoDate(month, year);
+    async function handleUserInfoChange() {
+      setLoadingInfo(true);
+      await getUserInfoDate(month, year);
+      setLoadingInfo(false);
+    }
+
+    handleUserInfoChange();
   }, [month, year]);
 
   const years = Array.from(

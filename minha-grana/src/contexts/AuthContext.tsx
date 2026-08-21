@@ -21,7 +21,6 @@ import type { User } from "../types/auth";
 interface AuthContextType {
   user: User | null;
   loadingPage: boolean;
-  loadingComponent: boolean;
   isAuthenticated: boolean;
 
   login: (username: string, password: string) => Promise<string>;
@@ -43,7 +42,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loadingPage, setLoadingPage] = useState(true);
-  const [loadingComponent, setLoadingComponent] = useState(false);
 
   // ======================================================
   // DELAY DO LOADING DE DATA
@@ -120,7 +118,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const getUserInfoDate = useCallback(async (month: number, year: number) => {
     const currentRequestId = ++requestId.current;
-    setLoadingComponent(true);
 
     try {
       const date = new Date(year, month, 1);
@@ -137,8 +134,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     } catch (error) {
       setUser(null);
-    } finally {
-      setLoadingComponent(false);
     }
   }, []);
 
@@ -191,7 +186,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         user,
         loadingPage,
-        loadingComponent,
         isAuthenticated: user !== null,
         login,
         register,
