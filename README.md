@@ -1,10 +1,10 @@
-![React](https://img.shields.io/badge/React-2026-blue?logo=react)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
-![Node.js](https://img.shields.io/badge/Node.js-green?logo=node.js)
-![Express](https://img.shields.io/badge/Express-black?logo=express)
-![MySQL](https://img.shields.io/badge/MySQL-8.0-blue?logo=mysql)
-![Vercel](https://img.shields.io/badge/Frontend-Vercel-black?logo=vercel)
-![Railway](https://img.shields.io/badge/Backend-Railway-purple?logo=railway)
+![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express-000000?logo=express&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000000?logo=vercel&logoColor=white)
+![Railway](https://img.shields.io/badge/Railway-000000?logo=railway&logoColor=white)
 
 # 💰 Minha Grana
 
