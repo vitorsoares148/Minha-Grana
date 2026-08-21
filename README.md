@@ -1,3 +1,11 @@
+![React](https://img.shields.io/badge/React-2026-blue?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
+![Node.js](https://img.shields.io/badge/Node.js-green?logo=node.js)
+![Express](https://img.shields.io/badge/Express-black?logo=express)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-blue?logo=mysql)
+![Vercel](https://img.shields.io/badge/Frontend-Vercel-black?logo=vercel)
+![Railway](https://img.shields.io/badge/Backend-Railway-purple?logo=railway)
+
 # 💰 Minha Grana
 
 > Aplicação web de gerenciamento financeiro pessoal desenvolvida para facilitar o controle de receitas, despesas, transações recorrentes, parcelas e metas financeiras.
