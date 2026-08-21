@@ -3,6 +3,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -20,7 +21,7 @@ import type { User } from "../types/auth";
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  loadingDate: boolean;
+  loadingDelay: boolean;
   isAuthenticated: boolean;
 
   login: (username: string, password: string) => Promise<string>;
@@ -42,7 +43,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [loadingDate, setLoadingDate] = useState(false);
+  const [loadingDelay, setLoadingDelay] = useState(false);
 
   // ======================================================
   // DELAY DO LOADING DE DATA
@@ -115,14 +116,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // INFORMAÇÕES DO USUÁRIO EM OUTRA DATA
   // ======================================================
 
+  const requestId = useRef(0);
+
   const getUserInfoDate = useCallback(async (month: number, year: number) => {
+    const currentRequestId = ++requestId.current;
+
     const timer = setTimeout(() => {
-      setLoadingDate(true);
+      setLoadingDelay(true);
     }, 300);
 
     try {
       const date = new Date(year, month, 1);
       const result = await userInfoService(date);
+
+      if (currentRequestId !== requestId.current) {
+        return;
+      }
 
       if (result.message === "AUTHENTICATED") {
         setUser(result.userinfo);
@@ -133,7 +142,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(null);
     } finally {
       clearTimeout(timer);
-      setLoadingDate(false);
+      setLoadingDelay(false);
     }
   }, []);
 
@@ -186,7 +195,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         user,
         loading,
-        loadingDate,
+        loadingDelay,
         isAuthenticated: user !== null,
         login,
         register,
