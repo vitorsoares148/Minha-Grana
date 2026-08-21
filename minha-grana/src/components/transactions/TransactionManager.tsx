@@ -14,6 +14,7 @@ import { useAuth } from "../../contexts/AuthContext";
 
 import AddTransactionDropdown from "./AddTransactionDropdown";
 import Box from "../generic/Box";
+import Loading from "../generic/Loading";
 
 export default function TransactionManager({
   selectedDate,
@@ -23,6 +24,7 @@ export default function TransactionManager({
   const { user, getUserInfoDate, updateBalance } = useAuth();
   const [openMenu, setOpenMenu] = useState(false);
   const [useable, setUseable] = useState(true);
+  const [loadingTransactions, setLoadingTransactions] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -44,6 +46,8 @@ export default function TransactionManager({
 
   async function handleDeleteTransaction(id: number) {
     try {
+      setLoadingTransactions(true);
+
       const result = await deleteTransaction(id);
 
       if (result.message !== "SUCCESS") {
@@ -57,6 +61,8 @@ export default function TransactionManager({
       );
     } catch (error) {
       console.error("Delete transaction error:", error);
+    } finally {
+      setLoadingTransactions(false);
     }
   }
 
@@ -84,79 +90,84 @@ export default function TransactionManager({
 
         {/* Transações */}
         {transactions.length > 0 ? (
-          <ul className="flex h-full w-full flex-col gap-3.5 overflow-y-auto">
-            {transactions.map((transaction: Transaction) => (
-              <li key={transaction.id}>
-                <div
-                  className={cn(
-                    "relative flex flex-col bg-neutral-900/20 p-4",
-                    "rounded-xl border-2 border-white/8",
-                  )}
-                >
-                  {/* Descrição */}
-                  <div className="truncate text-[24px] font-bold">
-                    {transaction.description}
-                  </div>
-
-                  {/* Valor */}
+          loadingTransactions ? (
+            <Loading />
+          ) : (
+            <ul className="flex h-full w-full flex-col gap-3.5 overflow-y-auto">
+              {transactions.map((transaction: Transaction) => (
+                <li key={transaction.id}>
                   <div
                     className={cn(
-                      "truncate",
-                      "text-[18px] font-semibold",
-                      transaction.type === "income"
-                        ? "text-green-500"
-                        : "text-red-500",
+                      "relative flex flex-col bg-neutral-900/20 p-4",
+                      "rounded-xl border-2 border-white/8",
                     )}
                   >
-                    {formatBRL(Number(transaction.amount))}
-                  </div>
+                    {/* Descrição */}
+                    <div className="truncate text-[24px] font-bold">
+                      {transaction.description}
+                    </div>
 
-                  {/* Categoria */}
-                  <div className="truncate text-[18px] font-semibold">
-                    {getCategory(transaction.category_id)}
-                  </div>
-
-                  {/* Botão de deletar transação */}
-                  <button
-                    className={cn(
-                      "absolute top-9.5 right-4 flex cursor-pointer items-center justify-center rounded-xl",
-                      "h-12.5 w-12.5 p-3",
-                      "text-[24px] font-bold text-white",
-                      "bg-red-500",
-                      "transition duration-200 ease-in-out",
-                      "hover:shadow-[0_0_20px_rgba(201,0,0,0.4)]",
-                    )}
-                    onClick={() =>
-                      transaction.id && handleDeleteTransaction(transaction.id)
-                    }
-                  >
-                    <FaXmark className="h-9 w-12" />
-                  </button>
-
-                  {/* Background Recorrente */}
-                  {!!transaction.recurrent && (
-                    <FaRepeat
+                    {/* Valor */}
+                    <div
                       className={cn(
-                        "absolute top-3 left-57 h-25 w-25",
+                        "truncate",
+                        "text-[18px] font-semibold",
                         transaction.type === "income"
-                          ? "text-green-500/8"
-                          : "text-red-500/8",
+                          ? "text-green-500"
+                          : "text-red-500",
                       )}
-                    />
-                  )}
+                    >
+                      {formatBRL(Number(transaction.amount))}
+                    </div>
 
-                  {/* Background Parcelado */}
-                  {!!transaction.installment && (
-                    <RiCheckboxMultipleBlankLine
+                    {/* Categoria */}
+                    <div className="truncate text-[18px] font-semibold">
+                      {getCategory(transaction.category_id)}
+                    </div>
+
+                    {/* Botão de deletar transação */}
+                    <button
                       className={cn(
-                        "absolute top-0 left-55 h-30 w-30 text-red-500/8",
+                        "absolute top-9.5 right-4 flex cursor-pointer items-center justify-center rounded-xl",
+                        "h-12.5 w-12.5 p-3",
+                        "text-[24px] font-bold text-white",
+                        "bg-red-500",
+                        "transition duration-200 ease-in-out",
+                        "hover:shadow-[0_0_20px_rgba(201,0,0,0.4)]",
                       )}
-                    />
-                  )}
-                </div>
-              </li>
-            ))}
-          </ul>
+                      onClick={() =>
+                        transaction.id &&
+                        handleDeleteTransaction(transaction.id)
+                      }
+                    >
+                      <FaXmark className="h-9 w-12" />
+                    </button>
+
+                    {/* Background Recorrente */}
+                    {!!transaction.recurrent && (
+                      <FaRepeat
+                        className={cn(
+                          "absolute top-3 left-57 h-25 w-25",
+                          transaction.type === "income"
+                            ? "text-green-500/8"
+                            : "text-red-500/8",
+                        )}
+                      />
+                    )}
+
+                    {/* Background Parcelado */}
+                    {!!transaction.installment && (
+                      <RiCheckboxMultipleBlankLine
+                        className={cn(
+                          "absolute top-0 left-55 h-30 w-30 text-red-500/8",
+                        )}
+                      />
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )
         ) : (
           <div className="h-full text-center font-sans text-[24px] font-semibold text-white/20">
             Nenhuma transação encontrada...
