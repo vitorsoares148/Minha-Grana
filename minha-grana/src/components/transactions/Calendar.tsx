@@ -22,18 +22,12 @@ export default function Calendar({
 }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const { user, loadingDelay, getUserInfoDate } = useAuth();
-  const [loadDelay, setLoadDelay] = useState(false);
 
   function handleMonthChange(value: Date) {
-    setLoadDelay(false);
     setCurrentDate(value);
   }
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoadDelay(true);
-    }, 20);
-
     async function handleDateChange() {
       await getUserInfoDate(currentDate.getMonth(), currentDate.getFullYear());
 
@@ -47,10 +41,6 @@ export default function Calendar({
     }
 
     handleDateChange();
-
-    return () => {
-      clearTimeout(timer);
-    };
   }, [currentDate, getUserInfoDate, setSelectedDate]);
 
   return (
@@ -93,19 +83,18 @@ export default function Calendar({
       </div>
 
       {/* Grade Data */}
-      {loadDelay &&
-        (loadingDelay ? (
-          <div className="mt-[25%]">
-            <Loading />
-          </div>
-        ) : (
-          <DateGrid
-            currentDate={currentDate}
-            selectedDate={selectedDate}
-            setSelectedDate={setSelectedDate}
-            user={user}
-          />
-        ))}
+      {loadingDelay ? (
+        <div className="mt-[25%]">
+          <Loading />
+        </div>
+      ) : (
+        <DateGrid
+          currentDate={currentDate}
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          user={user}
+        />
+      )}
     </div>
   );
 }
