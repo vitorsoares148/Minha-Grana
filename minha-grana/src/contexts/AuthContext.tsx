@@ -177,11 +177,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(async () => {
     try {
+      setUser(null);
       await logoutService();
     } catch (error) {
       console.error(error);
-    } finally {
-      setUser(null);
     }
   }, []);
 
