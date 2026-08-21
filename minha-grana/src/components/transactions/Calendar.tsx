@@ -21,7 +21,7 @@ export default function Calendar({
   setSelectedDate,
 }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const { user, loadingDelay, getUserInfoDate } = useAuth();
+  const { user, loadingComponent, getUserInfoDate } = useAuth();
 
   function handleMonthChange(value: Date) {
     setCurrentDate(value);
@@ -83,7 +83,7 @@ export default function Calendar({
       </div>
 
       {/* Grade Data */}
-      {loadingDelay ? (
+      {loadingComponent ? (
         <div className="mt-[25%]">
           <Loading />
         </div>

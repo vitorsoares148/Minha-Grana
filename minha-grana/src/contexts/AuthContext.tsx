@@ -20,8 +20,8 @@ import type { User } from "../types/auth";
 
 interface AuthContextType {
   user: User | null;
-  loading: boolean;
-  loadingDelay: boolean;
+  loadingPage: boolean;
+  loadingComponent: boolean;
   isAuthenticated: boolean;
 
   login: (username: string, password: string) => Promise<string>;
@@ -42,8 +42,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [loadingDelay, setLoadingDelay] = useState(false);
+  const [loadingPage, setLoadingPage] = useState(true);
+  const [loadingComponent, setLoadingComponent] = useState(false);
 
   // ======================================================
   // DELAY DO LOADING DE DATA
@@ -108,7 +108,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       setUser(null);
     } finally {
-      setLoading(false);
+      setLoadingPage(false);
     }
   }, []);
 
@@ -120,10 +120,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const getUserInfoDate = useCallback(async (month: number, year: number) => {
     const currentRequestId = ++requestId.current;
-
-    const timer = setTimeout(() => {
-      setLoadingDelay(true);
-    }, 300);
+    setLoadingComponent(true);
 
     try {
       const date = new Date(year, month, 1);
@@ -141,8 +138,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       setUser(null);
     } finally {
-      clearTimeout(timer);
-      setLoadingDelay(false);
+      setLoadingComponent(false);
     }
   }, []);
 
@@ -194,8 +190,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{
         user,
-        loading,
-        loadingDelay,
+        loadingPage,
+        loadingComponent,
         isAuthenticated: user !== null,
         login,
         register,
