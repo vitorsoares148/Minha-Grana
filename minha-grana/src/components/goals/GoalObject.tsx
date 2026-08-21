@@ -93,7 +93,7 @@ export default function Goal({
   return (
     <Box className="min-h-69 w-140">
       {loadingUpdateGoal ? (
-        <Loading className="mt-18" />
+        <Loading className="mt-17.5" />
       ) : (
         <div>
           {/* Nome */}
