@@ -12,6 +12,7 @@ import CategoryDropdown from "./CategoryDropdown";
 import TransactionToggle from "./TransactionToggle";
 import InputInfo from "../login/InputInfo";
 import InputBRL from "./InputBRL";
+import Loading from "../generic/Loading";
 
 const ERROR_TRANSACTION = {
   NONE: 0,
@@ -30,6 +31,7 @@ export default function AddTransactionDropdown({
   setOpenMenu: React.Dispatch<React.SetStateAction<boolean>>;
   setUseable: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const [loadingTransaction, setLoadingTrasaction] = useState(false);
   const [description, setDesc] = useState("");
   const [value, setValue] = useState<number | "">(0);
   const [category, setCategory] = useState(1);
@@ -145,6 +147,7 @@ export default function AddTransactionDropdown({
     const transaction = buildTransaction();
 
     try {
+      setLoadingTrasaction(true);
       const result = await createTransaction(transaction);
 
       if (result.message !== "SUCCESS") {
@@ -163,6 +166,8 @@ export default function AddTransactionDropdown({
     } catch (error) {
       console.error("Create transaction error:", error);
       setValueError(ERROR_TRANSACTION.INVALID);
+    } finally {
+      setLoadingTrasaction(false);
     }
   }
 
@@ -186,116 +191,120 @@ export default function AddTransactionDropdown({
         "bg-neutral-900/90",
       )}
     >
-      <div>
-        {/* Descrição Input */}
-        <div className="mb-3 flex items-center">
-          <div>
-            <div className="flex items-center gap-2">
-              <InputInfo
-                value={description}
-                onChange={setDesc}
-                onErrorReset={() => setDescError(ERROR_TRANSACTION.NONE)}
-                placeholder="Descrição"
-                className="w-80"
-                type="text"
-                error={descError !== ERROR_TRANSACTION.NONE}
-                maxLength={40}
-              />
-              <div className="text-[18px] font-bold text-neutral-600">
-                {description.length}/40
+      {loadingTransaction ? (
+        <Loading />
+      ) : (
+        <div>
+          {/* Descrição Input */}
+          <div className="mb-3 flex items-center">
+            <div>
+              <div className="flex items-center gap-2">
+                <InputInfo
+                  value={description}
+                  onChange={setDesc}
+                  onErrorReset={() => setDescError(ERROR_TRANSACTION.NONE)}
+                  placeholder="Descrição"
+                  className="w-80"
+                  type="text"
+                  error={descError !== ERROR_TRANSACTION.NONE}
+                  maxLength={40}
+                />
+                <div className="text-[18px] font-bold text-neutral-600">
+                  {description.length}/40
+                </div>
               </div>
+              {descError !== ERROR_TRANSACTION.NONE && (
+                <ErrorMessage message={descErrorMessages[descError]} />
+              )}
             </div>
-            {descError !== ERROR_TRANSACTION.NONE && (
-              <ErrorMessage message={descErrorMessages[descError]} />
-            )}
           </div>
-        </div>
 
-        <div className="mb-3">
-          <div className="flex items-center gap-2.5">
-            {/* Valor Input */}
-            <InputBRL
-              value={value}
-              error={valueError !== ERROR_TRANSACTION.NONE}
-              onClearError={() => setValueError(ERROR_TRANSACTION.NONE)}
-              className="w-40"
-              onChange={setValue}
-            />
+          <div className="mb-3">
+            <div className="flex items-center gap-2.5">
+              {/* Valor Input */}
+              <InputBRL
+                value={value}
+                error={valueError !== ERROR_TRANSACTION.NONE}
+                onClearError={() => setValueError(ERROR_TRANSACTION.NONE)}
+                className="w-40"
+                onChange={setValue}
+              />
 
-            {/* Categoria Dropdown */}
-            <CategoryDropdown
-              selectedCategory={selectedCategory}
-              setCategory={(id) => {
-                setCategory(id);
-                setInstallments(false);
-                setRecurrent(false);
-              }}
-            />
-          </div>
-          {valueError !== ERROR_TRANSACTION.NONE && (
-            <div className="mt-1 mr-72 text-center text-[18px] font-semibold text-red-500">
-              {valueErrorMessages[valueError]}
-            </div>
-          )}
-        </div>
-
-        {/* Checkbox Recorrente */}
-        <div className="flex h-12.5 items-center gap-10">
-          <TransactionToggle
-            checked={recurrent}
-            label="Recorrente"
-            onClick={() => {
-              setRecurrent((prev) => !prev);
-              setInstallments(false);
-            }}
-          />
-
-          {/* Checkbox Parcelado */}
-          {isExpense && (
-            <div className="flex items-center gap-2">
-              <TransactionToggle
-                checked={installments}
-                label="Parcelado"
-                onClick={() => {
-                  setInstallments((prev) => !prev);
+              {/* Categoria Dropdown */}
+              <CategoryDropdown
+                selectedCategory={selectedCategory}
+                setCategory={(id) => {
+                  setCategory(id);
+                  setInstallments(false);
                   setRecurrent(false);
                 }}
               />
-
-              {installments && (
-                <InputInfo
-                  value={installmentsQuant}
-                  onChange={handleNumeric}
-                  onErrorReset={() =>
-                    setInstallmentsError(ERROR_TRANSACTION.NONE)
-                  }
-                  placeholder="Prest"
-                  className="ml-1 w-20"
-                  type="text"
-                  numeric={true}
-                  error={installmentsError !== ERROR_TRANSACTION.NONE}
-                  maxLength={2}
-                />
-              )}
             </div>
-          )}
-        </div>
+            {valueError !== ERROR_TRANSACTION.NONE && (
+              <div className="mt-1 mr-72 text-center text-[18px] font-semibold text-red-500">
+                {valueErrorMessages[valueError]}
+              </div>
+            )}
+          </div>
 
-        {/* Botão */}
-        <button
-          className={cn(
-            "fixed right-3 bottom-3 flex cursor-pointer justify-center self-end rounded-xl",
-            "h-12.5 w-12.5 p-3",
-            "text-[24px] font-bold text-white",
-            "bg-green-500",
-            "transition duration-200 ease-in-out",
-            "hover:shadow-[0_0_20px_rgba(0,201,80,0.4)]",
-          )}
-          onClick={() => handleCreateTransaction()}
-        >
-          <FaPlus className="h-7 w-12" />
-        </button>
-      </div>
+          {/* Checkbox Recorrente */}
+          <div className="flex h-12.5 items-center gap-10">
+            <TransactionToggle
+              checked={recurrent}
+              label="Recorrente"
+              onClick={() => {
+                setRecurrent((prev) => !prev);
+                setInstallments(false);
+              }}
+            />
+
+            {/* Checkbox Parcelado */}
+            {isExpense && (
+              <div className="flex items-center gap-2">
+                <TransactionToggle
+                  checked={installments}
+                  label="Parcelado"
+                  onClick={() => {
+                    setInstallments((prev) => !prev);
+                    setRecurrent(false);
+                  }}
+                />
+
+                {installments && (
+                  <InputInfo
+                    value={installmentsQuant}
+                    onChange={handleNumeric}
+                    onErrorReset={() =>
+                      setInstallmentsError(ERROR_TRANSACTION.NONE)
+                    }
+                    placeholder="Prest"
+                    className="ml-1 w-20"
+                    type="text"
+                    numeric={true}
+                    error={installmentsError !== ERROR_TRANSACTION.NONE}
+                    maxLength={2}
+                  />
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Botão */}
+          <button
+            className={cn(
+              "fixed right-3 bottom-3 flex cursor-pointer justify-center self-end rounded-xl",
+              "h-12.5 w-12.5 p-3",
+              "text-[24px] font-bold text-white",
+              "bg-green-500",
+              "transition duration-200 ease-in-out",
+              "hover:shadow-[0_0_20px_rgba(0,201,80,0.4)]",
+            )}
+            onClick={() => handleCreateTransaction()}
+          >
+            <FaPlus className="h-7 w-12" />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
