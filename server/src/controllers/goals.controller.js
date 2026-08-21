@@ -107,6 +107,9 @@ async function deleteGoal(req, res) {
   }
 }
 
+// ======================================================
+// ATUALIZAR META
+// ======================================================
 async function updateGoal(req, res) {
   const goalId = Number(req.params.id);
   const currentValue = Number(req.body.current_value);
@@ -131,16 +134,28 @@ async function updateGoal(req, res) {
   }
 
   try {
-    const updated = await goalsService.updateGoal(
+    const result = await goalsService.updateGoal(
       req.userId,
       goalId,
       currentValue,
       finished,
     );
 
-    if (!updated) {
+    if (result === false) {
       return res.status(404).json({
         error: "GOAL_NOT_FOUND",
+      });
+    }
+
+    if (result.reason === "VALUE_EXCEEDS_TARGET") {
+      return res.status(400).json({
+        error: "VALUE_EXCEEDS_TARGET",
+      });
+    }
+
+    if (result.reason === "GOAL_NOT_REACHED") {
+      return res.status(400).json({
+        error: "GOAL_NOT_REACHED",
       });
     }
 
