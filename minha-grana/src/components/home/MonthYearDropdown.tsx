@@ -20,7 +20,6 @@ export default function MonthYearDropdown({
 
   const { getUserInfoDate } = useAuth();
 
-  const isMounted = useRef(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
