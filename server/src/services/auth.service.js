@@ -94,7 +94,7 @@ function createToken(userId, res) {
     // HTTPS em produção
     secure: process.env.NODE_ENV === "production",
     // Proteção contra CSRF
-    sameSite: "strict",
+    sameSite: "none",
     // Cookie disponível para toda a aplicação
     path: "/",
     // 60 minutos
