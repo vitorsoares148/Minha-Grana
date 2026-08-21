@@ -25,12 +25,12 @@ export default function Calendar({
   const [loadingDate, setLoadingDate] = useState(true);
 
   function handleMonthChange(value: Date) {
+    setLoadingDate(true);
     setCurrentDate(value);
   }
 
   useEffect(() => {
     async function handleDateChange() {
-      setLoadingDate(true);
       await getUserInfoDate(currentDate.getMonth(), currentDate.getFullYear());
 
       const monthEnd = endOfMonth(currentDate);
