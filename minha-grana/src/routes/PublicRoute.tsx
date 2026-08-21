@@ -3,9 +3,9 @@ import { useAuth } from "../contexts/AuthContext";
 import Loading from "../components/generic/Loading";
 
 export default function PublicRoute() {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loadingPage } = useAuth();
 
-  if (loading) {
+  if (loadingPage) {
     return <Loading />;
   }
 
