@@ -17,7 +17,7 @@ export const CATEGORIES: Category[] = [
   {
     id: 2,
     emoji: "🏦",
-    name: "Deposito",
+    name: "Depósito",
     color: "rgba(255, 255, 255, 1)",
     expense: false,
   },
