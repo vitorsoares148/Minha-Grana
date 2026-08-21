@@ -137,7 +137,7 @@ export default function AddGoalDropdown({
       )}
     >
       {loadingCreateGoal ? (
-        <Loading className="mt-8" />
+        <Loading className="mt-4.5" />
       ) : (
         <div>
           <div className="mb-3 flex items-center">
