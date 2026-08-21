@@ -10,7 +10,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { cn } from "../utils/cn";
 
 export default function Home() {
-  const { user, loadingDate } = useAuth();
+  const { user, loadingDelay } = useAuth();
 
   const totalExpenses =
     user?.transactions.reduce(
@@ -35,7 +35,7 @@ export default function Home() {
         <MonthYearDropdown />
       </div>
 
-      {loadingDate ? (
+      {loadingDelay ? (
         <div className="w-152 lg:w-297">
           <Loading />
         </div>
