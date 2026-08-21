@@ -24,7 +24,7 @@ export default function TransactionManager({
   const { user, getUserInfoDate, updateBalance } = useAuth();
   const [openMenu, setOpenMenu] = useState(false);
   const [useable, setUseable] = useState(true);
-  const [loadingTransactions, setLoadingTransactions] = useState(true);
+  const [loadingTransactions, setLoadingTransactions] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -90,11 +90,11 @@ export default function TransactionManager({
 
         {/* Transações */}
         {transactions.length > 0 ? (
-          loadingTransactions ? (
-            <Loading />
-          ) : (
-            <ul className="flex h-full w-full flex-col gap-3.5 overflow-y-auto">
-              {transactions.map((transaction: Transaction) => (
+          <ul className="flex h-full w-full flex-col gap-3.5 overflow-y-auto">
+            {loadingTransactions ? (
+              <Loading />
+            ) : (
+              transactions.map((transaction: Transaction) => (
                 <li key={transaction.id}>
                   <div
                     className={cn(
@@ -165,9 +165,9 @@ export default function TransactionManager({
                     )}
                   </div>
                 </li>
-              ))}
-            </ul>
-          )
+              ))
+            )}
+          </ul>
         ) : (
           <div className="h-full text-center font-sans text-[24px] font-semibold text-white/20">
             Nenhuma transação encontrada...
