@@ -125,7 +125,6 @@ export default function Login() {
 
     if (result === "SUCCESS") {
       await updateBalance();
-      console.log("test");
       navigate("/home");
     } else if (result === "TOO_MANY_LOGIN_ATTEMPTS") {
       setNameFormError(ERROR_FORM.NOTHING);

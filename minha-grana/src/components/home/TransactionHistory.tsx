@@ -52,7 +52,7 @@ export default function TransactionHistory({ user }: TransactionHistoryProps) {
               >
                 {/* Data */}
                 <div className="w-[10%] font-sans text-[18px]">
-                  {formatDate(new Date(transaction.transaction_date))}
+                  {formatDate(transaction.transaction_date)}
                 </div>
 
                 {/* Descrição */}

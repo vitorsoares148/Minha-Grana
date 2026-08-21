@@ -42,13 +42,7 @@ export default function DateGrid({
     let transactionTotal = 0;
 
     user?.transactions.forEach((transaction) => {
-      const transactionDate = new Date(transaction.transaction_date);
-
-      const matchesDay = transaction.recurrent
-        ? isTransactionOnDate(transaction, day)
-        : isSameDay(transactionDate, day);
-
-      if (!matchesDay) {
+      if (!isTransactionOnDate(transaction, day)) {
         return;
       }
 

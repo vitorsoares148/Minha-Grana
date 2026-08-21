@@ -1,17 +1,30 @@
 import { endOfMonth } from "date-fns";
+
 import type { Transaction } from "../types/auth";
 
 export function isTransactionOnDate(
   transaction: Transaction,
   date: Date,
 ): boolean {
-  const transactionDate = new Date(transaction.transaction_date);
+  const [year, month, day] = transaction.transaction_date
+    .split("-")
+    .map(Number);
+
+  const transactionYear = year;
+  const transactionMonth = month - 1;
+  const transactionDay = day;
+
+  const transactionDate = new Date(
+    transactionYear,
+    transactionMonth,
+    transactionDay,
+  );
 
   if (!transaction.recurrent) {
     return (
-      transactionDate.getDate() === date.getDate() &&
-      transactionDate.getMonth() === date.getMonth() &&
-      transactionDate.getFullYear() === date.getFullYear()
+      transactionYear === date.getFullYear() &&
+      transactionMonth === date.getMonth() &&
+      transactionDay === date.getDate()
     );
   }
 
@@ -19,7 +32,6 @@ export function isTransactionOnDate(
     return false;
   }
 
-  const transactionDay = transactionDate.getDate();
   const selectedDay = date.getDate();
 
   if (transactionDay > 28) {
