@@ -43,10 +43,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loadingPage, setLoadingPage] = useState(true);
 
-  // ======================================================
-  // DELAY DO LOADING DE DATA
-  // ======================================================
-
   useEffect(() => {
     const handleUnauthorized = () => {
       setUser(null);
