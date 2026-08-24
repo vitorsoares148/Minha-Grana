@@ -65,7 +65,7 @@ export default function Login() {
     setShow((prev) => !prev);
   };
 
-  function validateRequiredFields(isRegister: boolean) {
+  function validateRequiredFields() {
     let valid = true;
 
     if (name.length === 0) {
@@ -78,7 +78,7 @@ export default function Login() {
       valid = false;
     }
 
-    if (isRegister && email.length === 0) {
+    if (registering && email.length === 0) {
       setEmailFormError(ERROR_FORM.REQUIRED);
       valid = false;
     }
@@ -86,17 +86,17 @@ export default function Login() {
     return valid;
   }
 
-  function isFormValid(isRegister: boolean) {
+  function isFormValid() {
     return (
       nameFormError === ERROR_FORM.VALID &&
       passwordFormError === ERROR_FORM.VALID &&
-      (!isRegister || emailFormError === ERROR_FORM.VALID)
+      (!registering || emailFormError === ERROR_FORM.VALID)
     );
   }
 
   const handleRegister = async () => {
-    if (!isFormValid(false)) {
-      validateRequiredFields(false);
+    if (!isFormValid()) {
+      validateRequiredFields();
       return;
     }
 
@@ -116,8 +116,8 @@ export default function Login() {
   };
 
   const handleLogin = async () => {
-    if (!isFormValid(false)) {
-      validateRequiredFields(false);
+    if (!isFormValid()) {
+      validateRequiredFields();
       return;
     }
 
