@@ -178,4 +178,3 @@ O Minha Grana foi desenvolvido com o objetivo de aplicar conhecimentos de desenv
 ## Licença
 
 Este projeto foi desenvolvido como um projeto pessoal para portfólio.
-```
