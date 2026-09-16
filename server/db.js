@@ -12,6 +12,11 @@ const pool = mysql.createPool({
   user: DB_USER,
   password: DB_PASSWORD,
   database: DB_NAME,
+
+  ssl: {
+    rejectUnauthorized: false,
+  },
+
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
