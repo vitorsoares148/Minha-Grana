@@ -62,7 +62,7 @@ export default function TransactionHistory({ user }: TransactionHistoryProps) {
                 key={transaction.id}
                 className={cn(
                   "flex h-8 items-center justify-around",
-                  "cursor-pointer border-b-2 border-b-white/15 pl-2.5",
+                  "border-b-2 border-b-white/15 pl-2.5",
                   "transition duration-200 ease-in-out hover:bg-white/10",
                   "lg:justify-center",
                 )}

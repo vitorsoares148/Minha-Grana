@@ -68,14 +68,14 @@ export default function Calendar({
             onClick={() => handleMonthChange(subMonths(currentDate, 1))}
             disabled={loadingDate}
           >
-            <MdKeyboardArrowLeft className="h-12 w-12 rounded-xl bg-white/6 text-white transition-all hover:bg-green-500" />
+            <MdKeyboardArrowLeft className="h-12 w-12 cursor-pointer rounded-xl bg-white/6 text-white transition-all hover:bg-green-500" />
           </button>
 
           <button
             onClick={() => handleMonthChange(addMonths(currentDate, 1))}
             disabled={loadingDate}
           >
-            <MdKeyboardArrowRight className="h-12 w-12 rounded-xl bg-white/6 text-white transition-all hover:bg-green-500" />
+            <MdKeyboardArrowRight className="h-12 w-12 cursor-pointer rounded-xl bg-white/6 text-white transition-all hover:bg-green-500" />
           </button>
         </div>
       </div>
